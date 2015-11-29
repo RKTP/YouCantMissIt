@@ -21,6 +21,7 @@ public class SettingActivity extends AppCompatActivity {
     DBManager dbManager;
     ArrayList<LocationData> locationList;
     ListView listView;
+    ItemAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +33,8 @@ public class SettingActivity extends AppCompatActivity {
         locationList = dbManager.getAllLocation();
 
         listView = (ListView)findViewById(R.id.listView);
-        listView.setAdapter(new ItemAdapter(this,this.locationList));
+        adapter = new ItemAdapter(this,this.locationList);
+        listView.setAdapter(adapter);
 
         FloatingActionButton addButton = (FloatingActionButton) findViewById(R.id.fab);
         addButton.setOnClickListener(new View.OnClickListener() {
@@ -40,6 +42,7 @@ public class SettingActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+                adapter.notifyDataSetChanged();
             }
         });
 

@@ -5,13 +5,15 @@
 
 package com.example.julian.youcantmissit;
 
-import android.app.IntentService;
+import android.Manifest;
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.location.*;
 import android.location.LocationListener;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.v4.content.ContextCompat;
 
 import java.util.ArrayList;
 
@@ -37,44 +39,38 @@ class customLocationListener implements LocationListener {
     }
 }
 
-public class LocationService extends IntentService {
+public class LocationService extends Service {
     private static LocationData topPriority=null;
     DBManager db;
     static Location myLocation;
     LocationManager locationManager=(LocationManager)getSystemService(Context.LOCATION_SERVICE);
     int lat=0,lng=0;
+    static int  permission;
 
     LocationListener locationListener = new customLocationListener();
 
     public LocationService() {
-        super(".LocationService");
+        super();
     }
 
     public static LocationData getTop() {
         return topPriority;
     }
 
-    public LocationService(String name) {
-        super(name);
-    }
-
-    @Override
-    protected void onHandleIntent(Intent intent) {
-
-    }
-
     @Override
     public void onCreate() {
         db=DBManager.getInstance(getApplicationContext());
         updateTargetLocation();
+        permission = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
         locationManager.requestLocationUpdates(locationManager.GPS_PROVIDER,1000,1,locationListener);
+        locationManager.requestLocationUpdates(locationManager.NETWORK_PROVIDER,1000,1,locationListener);
     }
+
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
-        //shall be implemented
-
+        updateTargetLocation();
+        //widget update
         return START_REDELIVER_INTENT;
     }
 
@@ -86,7 +82,19 @@ public class LocationService extends IntentService {
 
     private void updateTargetLocation() {
         ArrayList<LocationData> locationList = db.getActiveLocation();
-
+        float minimum=Float.MAX_VALUE;
+        for(LocationData e : locationList) {
+            Location element = new Location("");
+            element.setLatitude(e.getLat());
+            element.setLongitude(e.getLng());
+            float distance = myLocation.distanceTo(element);
+            if(distance>500) {
+                continue;
+            } else if(distance<minimum) {
+                minimum=distance;
+                topPriority=e;
+            }
+            if(minimum==Float.MAX_VALUE) topPriority=null;
+        }
     }
-
 }
