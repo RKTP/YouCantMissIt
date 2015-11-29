@@ -59,8 +59,8 @@ public class SettingActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
+    protected void onStop() {
+        setResult(0);
+        super.onStop();
     }
 }
