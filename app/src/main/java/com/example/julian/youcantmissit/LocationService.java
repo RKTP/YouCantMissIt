@@ -70,6 +70,11 @@ public class LocationService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         updateTargetLocation();
+        try {
+            Thread.sleep(3000);
+        } catch(InterruptedException e) {
+            //This shan't happen
+        }
         //widget update
         return START_REDELIVER_INTENT;
     }

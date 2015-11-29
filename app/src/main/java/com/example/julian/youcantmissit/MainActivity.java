@@ -16,16 +16,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        try {
-            Thread.sleep(2000);
-        } catch(InterruptedException e) {
-            //No way...
-        }
-
-        settingIntent = new Intent(this,SettingActivity.class);
-        serviceIntent = new Intent(this,LocationService.class);
-        startService(serviceIntent);
-        startActivity(settingIntent);
+        findViewById(android.R.id.content).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Intent settingIntent = new Intent(MainActivity.this, SettingActivity.class);
+                Intent serviceIntent = new Intent(MainActivity.this, LocationService.class);
+                MainActivity.this.startActivity(settingIntent);
+                MainActivity.this.startService(serviceIntent);
+            }
+        }, 2000);
     }
 }
