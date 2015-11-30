@@ -52,6 +52,7 @@ public class ItemAdapter extends BaseAdapter {
             activeSwitch.setChecked(dataList.get(position).isActivated());
             itemName.setText(dataList.get(position).getName());
         }
+        
         return vi;
     }
 }

@@ -10,7 +10,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -32,19 +31,20 @@ public class SettingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_setting);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        dbManager=DBManager.getInstance(getApplicationContext());
+        dbManager = DBManager.getInstance(getApplicationContext());
         locationList = dbManager.getAllLocation();
 
-        listView = (ListView)findViewById(R.id.listView);
-        adapter = new ItemAdapter(this,this.locationList);
+        listView = (ListView) findViewById(R.id.listView);
+        adapter = new ItemAdapter(this, this.locationList);
         listView.setAdapter(adapter);
+        listView.setLongClickable(true);
 
         FloatingActionButton addButton = (FloatingActionButton) findViewById(R.id.fab);
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent childIntent = new Intent(SettingActivity.this, SearchLocation.class);
+                startActivityForResult(childIntent, 0);
                 adapter.notifyDataSetChanged();
             }
         });
@@ -52,13 +52,37 @@ public class SettingActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getApplicationContext(),LocationDetailActivity.class);
-                intent.putExtra("lat",locationList.get(position).getLat());
-                intent.putExtra("lng",locationList.get(position).getLng());
-                intent.putExtra("name",locationList.get(position).getName());
+                Intent intent = new Intent(getApplicationContext(), LocationDetailActivity.class);
+                intent.putExtra("lat", locationList.get(position).getLat());
+                intent.putExtra("lng", locationList.get(position).getLng());
+                intent.putExtra("name", locationList.get(position).getName());
                 startActivity(intent);
             }
         });
+
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                //
+                return false;
+            }
+        });
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode==0&&resultCode==0) {
+            int key;
+            try {
+                key = data.getExtras().getString("name").hashCode();
+
+                LocationData newLocation = new LocationData(key, data.getExtras().getString("name"),data.getExtras().getFloat("lat"),data.getExtras().getFloat("lng"),1);
+                this.locationList.add(newLocation);
+                this.dbManager.insert(newLocation);
+            } catch(NullPointerException e) {
+                //
+            }
+            adapter.notifyDataSetChanged();
+        }
     }
 
     protected void onStop() {
