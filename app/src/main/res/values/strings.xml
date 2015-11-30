@@ -8,4 +8,5 @@
     <string name="subtitle">Seriously.</string>
     <string name="version">"v.0.0.1"</string>
     <string name="title_activity_find_location">Map</string>
+    <string name="title_activity_add_location">AddLocation</string>
 </resources>

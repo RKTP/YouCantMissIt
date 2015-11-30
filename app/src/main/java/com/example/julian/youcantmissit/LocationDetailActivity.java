@@ -18,7 +18,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 public class LocationDetailActivity extends FragmentActivity implements OnMapReadyCallback {
     private GoogleMap mMap;
-    private int lat,lng;
+    private float lat,lng;
     private String name;
 
     @Override
@@ -42,6 +42,14 @@ public class LocationDetailActivity extends FragmentActivity implements OnMapRea
         mMap = googleMap;
         LatLng target = new LatLng(this.lat, this.lng);
         mMap.addMarker(new MarkerOptions().position(target).title(name));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(target));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(target, 13));
+    }
+
+    public void moveCamera(float lat,float lng, String locationName) {
+        this.lat = lat;
+        this.lng = lng;
+        LatLng target = new LatLng(this.lat, this.lng);
+        mMap.addMarker(new MarkerOptions().position(target).title(locationName));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(target, 13));
     }
 }

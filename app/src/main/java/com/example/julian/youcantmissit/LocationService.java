@@ -42,7 +42,7 @@ class customLocationListener implements LocationListener {
 public class LocationService extends Service {
     private static LocationData topPriority=null;
     DBManager db;
-    static Location myLocation;
+    static Location myLocation=null;
     LocationManager locationManager=(LocationManager)getSystemService(Context.LOCATION_SERVICE);
     int lat=0,lng=0;
     static int  permission;
@@ -61,6 +61,9 @@ public class LocationService extends Service {
     public void onCreate() {
         db=DBManager.getInstance(getApplicationContext());
         updateTargetLocation();
+        myLocation = new Location("");
+        myLocation.setLatitude(0);
+        myLocation.setLongitude(0);
         permission = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
         locationManager.requestLocationUpdates(locationManager.GPS_PROVIDER,1000,1,locationListener);
         locationManager.requestLocationUpdates(locationManager.NETWORK_PROVIDER,1000,1,locationListener);

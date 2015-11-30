@@ -8,10 +8,10 @@ package com.example.julian.youcantmissit;
 public class LocationData {
     private String name;
     private int key;
-    private int lat,lng;
+    private float lat,lng;
     private boolean activate;
 
-    public LocationData(int key, String name, int lat, int lng, int activeFlag) {
+    public LocationData(int key, String name, float lat, float lng, int activeFlag) {
         this.name = name;
         this.key = key;
         this.lat = lat;
@@ -29,11 +29,11 @@ public class LocationData {
         return key;
     }
 
-    public int getLat() {
+    public float getLat() {
         return lat;
     }
 
-    public int getLng() {
+    public float getLng() {
         return lng;
     }
 

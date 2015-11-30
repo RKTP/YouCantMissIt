@@ -36,8 +36,8 @@ public class DBManager extends SQLiteOpenHelper {
                 tableName + " (" +
                 id + " INTEGER, " +
                 name + " TEXT not null, " +
-                lat + " INTEGER, " +
-                lng + " INTEGER, " +
+                lat + " FLOAT, " +
+                lng + " FLOAT, " +
                 act + " INTEGER);";
         db.execSQL(query);
     }
@@ -69,7 +69,7 @@ public class DBManager extends SQLiteOpenHelper {
             String query = "SELECT * FROM " + this.tableName + ";";
             Cursor cursor = db.rawQuery(query, null);
             while (cursor.moveToNext()) {
-                locationList.add(new LocationData(cursor.getInt(0), cursor.getString(1), cursor.getInt(2), cursor.getInt(3), cursor.getInt(4)));
+                locationList.add(new LocationData(cursor.getInt(0), cursor.getString(1), cursor.getFloat(2), cursor.getFloat(3), cursor.getInt(4)));
             }
             cursor.close();
             this.dataList = locationList;
@@ -111,11 +111,24 @@ public class DBManager extends SQLiteOpenHelper {
             String query = "SELECT * FROM " + this.tableName + " WHERE " + act +  " =1;";
             Cursor cursor = db.rawQuery(query, null);
             while (cursor.moveToNext()) {
-                locationList.add(new LocationData(cursor.getInt(0), cursor.getString(1), cursor.getInt(2), cursor.getInt(3), cursor.getInt(4)));
+                locationList.add(new LocationData(cursor.getInt(0), cursor.getString(1), cursor.getFloat(2), cursor.getFloat(3), cursor.getInt(4)));
             }
             cursor.close();
             this.dataList = locationList;
         }
         return this.dataList;
+    }
+
+    public boolean changeActive(int key, boolean newStatus) {
+        int flag=0;
+        if(newStatus) {
+            flag=1;
+        }
+        String query = "UPDATE " +
+                tableName + " SET " +
+                act + "=" + 1 + " WHERE " +
+                id + "=" + key + ";";
+        db.execSQL(query);
+        return true;
     }
 }
