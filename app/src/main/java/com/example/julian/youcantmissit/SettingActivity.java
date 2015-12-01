@@ -72,6 +72,12 @@ public class SettingActivity extends AppCompatActivity {
                 adBuilder
                         .setMessage("Are you sure?")
                         .setCancelable(false)
+                        .setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        })
                         .setPositiveButton("YES", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -79,13 +85,8 @@ public class SettingActivity extends AppCompatActivity {
                                 locationList.remove(pos);
                                 adapter.notifyDataSetChanged();
                             }
-                        })
-                        .setNegativeButton("NO", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.cancel();
-                            }
                         });
+
                 return false;
             }
         });

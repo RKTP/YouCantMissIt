@@ -106,6 +106,13 @@ public class DBManager extends SQLiteOpenHelper {
         } else return true;
     }
 
+    public boolean delete(int key) {
+        int result = db.delete(tableName,"id=?",new String[]{String.valueOf(key)});
+        if(result==0) {
+            return false;
+        } else return true;
+    }
+
     public ArrayList<LocationData> getActiveLocation() {
         if(this.dataList==null) {
             ArrayList<LocationData> locationList = new ArrayList<>();

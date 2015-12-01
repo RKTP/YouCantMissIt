@@ -80,7 +80,7 @@ public class ItemAdapter extends BaseAdapter {
                         .setPositiveButton("YES", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                dbManager.delete(dataList.get(key));
+                                dbManager.delete(dataList.get(pos).getKey());
                                 dataList.remove(pos);
                                 ItemAdapter.this.notifyDataSetChanged();
                             }
@@ -91,7 +91,10 @@ public class ItemAdapter extends BaseAdapter {
                                 dialog.cancel();
                             }
                         });
-                return false;
+
+                AlertDialog dialog = adBuilder.create();
+                dialog.show();
+                return true;
             }
         });
 
