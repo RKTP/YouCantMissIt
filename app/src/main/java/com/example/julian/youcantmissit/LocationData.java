@@ -42,11 +42,7 @@ public class LocationData {
     }
 
     public boolean activationSwap() {
-        if (this.activate) {
-            this.activate = false;
-        } else {
-            this.activate = true;
-        }
+        activate = !this.activate;
         return this.activate;
     }
 }

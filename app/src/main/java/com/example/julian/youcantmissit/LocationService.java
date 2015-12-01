@@ -41,9 +41,9 @@ class customLocationListener implements LocationListener {
 
 public class LocationService extends Service {
     private static LocationData topPriority=null;
-    DBManager db;
+    private DBManager db;
     static Location myLocation=null;
-    LocationManager locationManager=(LocationManager)getSystemService(Context.LOCATION_SERVICE);
+    private LocationManager locationManager=(LocationManager)getSystemService(Context.LOCATION_SERVICE);
     int lat=0,lng=0;
     static int  permission;
 
@@ -65,19 +65,14 @@ public class LocationService extends Service {
         myLocation.setLatitude(0);
         myLocation.setLongitude(0);
         permission = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
-        locationManager.requestLocationUpdates(locationManager.GPS_PROVIDER,1000,1,locationListener);
-        locationManager.requestLocationUpdates(locationManager.NETWORK_PROVIDER,1000,1,locationListener);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,1000,1,locationListener);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,1000,1,locationListener);
     }
 
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         updateTargetLocation();
-        try {
-            Thread.sleep(3000);
-        } catch(InterruptedException e) {
-            //This shan't happen
-        }
         //widget update
         return START_REDELIVER_INTENT;
     }

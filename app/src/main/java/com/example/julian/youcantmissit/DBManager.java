@@ -40,6 +40,7 @@ public class DBManager extends SQLiteOpenHelper {
                 lng + " FLOAT, " +
                 act + " INTEGER);";
         db.execSQL(query);
+        getAllLocation();
     }
 
     public static DBManager getInstance(Context context) {
@@ -126,7 +127,7 @@ public class DBManager extends SQLiteOpenHelper {
         }
         String query = "UPDATE " +
                 tableName + " SET " +
-                act + "=" + 1 + " WHERE " +
+                act + "=" + flag + " WHERE " +
                 id + "=" + key + ";";
         db.execSQL(query);
         return true;

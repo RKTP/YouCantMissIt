@@ -5,13 +5,14 @@
 
 package com.example.julian.youcantmissit;
 
-import android.app.Dialog;
-import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -23,6 +24,7 @@ public class SettingActivity extends AppCompatActivity {
     ArrayList<LocationData> locationList;
     ListView listView;
     ItemAdapter adapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +65,27 @@ public class SettingActivity extends AppCompatActivity {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                //
+                final int pos = position;
+                final int key = locationList.get(pos).getKey();
+                AlertDialog.Builder adBuilder = new AlertDialog.Builder(getApplicationContext());
+                adBuilder.setTitle("Removing Location");
+                adBuilder
+                        .setMessage("Are you sure?")
+                        .setCancelable(false)
+                        .setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dbManager.delete(locationList.get(key));
+                                locationList.remove(pos);
+                                adapter.notifyDataSetChanged();
+                            }
+                        })
+                        .setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
                 return false;
             }
         });
@@ -74,9 +96,8 @@ public class SettingActivity extends AppCompatActivity {
             int key;
             try {
                 key = data.getExtras().getString("name").hashCode();
-
+                Log.e("TAG", "Incomedata " + data.getExtras().getString("name") + " || " + data.getExtras().getFloat("lat") + " || " + data.getExtras().getFloat("lng"));
                 LocationData newLocation = new LocationData(key, data.getExtras().getString("name"),data.getExtras().getFloat("lat"),data.getExtras().getFloat("lng"),1);
-                this.locationList.add(newLocation);
                 this.dbManager.insert(newLocation);
             } catch(NullPointerException e) {
                 //
@@ -84,6 +105,14 @@ public class SettingActivity extends AppCompatActivity {
             adapter.notifyDataSetChanged();
         }
     }
+
+    /*
+    public void swapSwitch(int pos) {
+        LocationData location = this.locationList.get(pos);
+        location.activationSwap();
+        dbManager.changeActive(location.getKey(),location.isActivated());
+        adapter.notifyDataSetChanged();
+    }*/
 
     protected void onStop() {
         setResult(0);

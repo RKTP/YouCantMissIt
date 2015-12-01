@@ -24,10 +24,9 @@ public class LocationDetailActivity extends FragmentActivity implements OnMapRea
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         Intent intent = getIntent();
-        lat = intent.getExtras().getInt("lat");
-        lng = intent.getExtras().getInt("lng");
+        lat = intent.getExtras().getFloat("lat");
+        lng = intent.getExtras().getFloat("lng");
         name = intent.getExtras().getString("name");
 
         setContentView(R.layout.activity_location_detail);
@@ -35,6 +34,7 @@ public class LocationDetailActivity extends FragmentActivity implements OnMapRea
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        moveCamera(lat,lng,name);
     }
 
     @Override
@@ -42,7 +42,7 @@ public class LocationDetailActivity extends FragmentActivity implements OnMapRea
         mMap = googleMap;
         LatLng target = new LatLng(this.lat, this.lng);
         mMap.addMarker(new MarkerOptions().position(target).title(name));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(target, 13));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(target, 14));
     }
 
     public void moveCamera(float lat,float lng, String locationName) {
@@ -50,6 +50,6 @@ public class LocationDetailActivity extends FragmentActivity implements OnMapRea
         this.lng = lng;
         LatLng target = new LatLng(this.lat, this.lng);
         mMap.addMarker(new MarkerOptions().position(target).title(locationName));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(target, 13));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(target, 14));
     }
 }
