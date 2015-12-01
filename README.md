@@ -37,3 +37,4 @@ limitations under the License.
 
 
 "Pencil","Compass" Icon made by "http://www.freepik.com" from www.flaticon.com
+"Plus" Icon made by "http://www.flaticon.com/authors/icomoon" from www.flaticon.com
