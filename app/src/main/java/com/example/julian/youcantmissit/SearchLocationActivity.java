@@ -132,7 +132,8 @@ public class SearchLocationActivity extends FragmentActivity implements OnMapRea
     @Override
     public void onMapReady(GoogleMap googleMap) {
         gMap = googleMap;
-        LatLng target = new LatLng(0,0);
+
+        LatLng target = new LatLng(LocationService.myLocation.getLatitude(),LocationService.myLocation.getLongitude());
         gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(target, 14));
     }
 

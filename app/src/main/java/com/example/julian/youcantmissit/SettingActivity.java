@@ -107,14 +107,6 @@ public class SettingActivity extends AppCompatActivity {
         }
     }
 
-    /*
-    public void swapSwitch(int pos) {
-        LocationData location = this.locationList.get(pos);
-        location.activationSwap();
-        dbManager.changeActive(location.getKey(),location.isActivated());
-        adapter.notifyDataSetChanged();
-    }*/
-
     protected void onPause() {
         dbManager.updateActiv();
         super.onPause();
