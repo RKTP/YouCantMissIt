@@ -115,6 +115,11 @@ public class SettingActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }*/
 
+    protected void onPause() {
+        dbManager.updateActiv();
+        super.onPause();
+    }
+
     protected void onStop() {
         setResult(0);
         super.onStop();

@@ -18,6 +18,7 @@ public class DBManager extends SQLiteOpenHelper {
     private static String DBname = "YouCantMissItDB";
     private static DBManager instance = null;
     private ArrayList<LocationData> dataList=null;
+    private ArrayList<LocationData> activList=null;
     private SQLiteDatabase db;
     private Context context;
 
@@ -114,7 +115,8 @@ public class DBManager extends SQLiteOpenHelper {
     }
 
     public ArrayList<LocationData> getActiveLocation() {
-        if(this.dataList==null) {
+
+        if(this.activList==null) {
             ArrayList<LocationData> locationList = new ArrayList<>();
             String query = "SELECT * FROM " + this.tableName + " WHERE " + act +  " =1;";
             Cursor cursor = db.rawQuery(query, null);
@@ -122,9 +124,19 @@ public class DBManager extends SQLiteOpenHelper {
                 locationList.add(new LocationData(cursor.getInt(0), cursor.getString(1), cursor.getFloat(2), cursor.getFloat(3), cursor.getInt(4)));
             }
             cursor.close();
-            this.dataList = locationList;
+            this.activList = locationList;
         }
-        return this.dataList;
+        return this.activList;
+    }
+
+    public void updateActiv() {
+        ArrayList<LocationData> locationList = new ArrayList<>();
+        for(LocationData e : dataList) {
+            if(e.isActivated()) {
+                locationList.add(e);
+            }
+        }
+        this.activList=locationList;
     }
 
     public boolean changeActive(int key, boolean newStatus) {

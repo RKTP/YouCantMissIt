@@ -14,6 +14,7 @@ import android.location.LocationListener;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -21,6 +22,7 @@ class customLocationListener implements LocationListener {
     @Override
     public void onLocationChanged(Location location) {
         LocationService.myLocation=location;
+        LocationService.updateTargetLocation();
     }
 
     @Override
@@ -40,10 +42,11 @@ class customLocationListener implements LocationListener {
 }
 
 public class LocationService extends Service {
+    Context context;
     private static LocationData topPriority=null;
-    private DBManager db;
+    private static DBManager db;
     static Location myLocation=null;
-    private LocationManager locationManager=(LocationManager)getSystemService(Context.LOCATION_SERVICE);
+    private LocationManager locationManager;
     int lat=0,lng=0;
     static int  permission;
 
@@ -59,20 +62,23 @@ public class LocationService extends Service {
 
     @Override
     public void onCreate() {
-        db=DBManager.getInstance(getApplicationContext());
-        updateTargetLocation();
+        context = getApplicationContext();
+        db=DBManager.getInstance(context);
         myLocation = new Location("");
         myLocation.setLatitude(0);
         myLocation.setLongitude(0);
+        locationManager=(LocationManager)getSystemService(context.LOCATION_SERVICE);
         permission = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,1000,1,locationListener);
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,1000,1,locationListener);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,10000,5,locationListener);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,10000,5,locationListener);
+        updateTargetLocation();
     }
 
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         updateTargetLocation();
+        Log.d("serviceLog",myLocation.getLatitude()+" || " + myLocation.getLongitude());
         //widget update
         return START_REDELIVER_INTENT;
     }
@@ -83,7 +89,7 @@ public class LocationService extends Service {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
-    private void updateTargetLocation() {
+    protected static void updateTargetLocation() {
         ArrayList<LocationData> locationList = db.getActiveLocation();
         float minimum=Float.MAX_VALUE;
         for(LocationData e : locationList) {

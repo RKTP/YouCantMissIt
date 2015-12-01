@@ -20,9 +20,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 Intent settingIntent = new Intent(MainActivity.this, SettingActivity.class);
- //               Intent serviceIntent = new Intent(MainActivity.this, LocationService.class);
+                Intent serviceIntent = new Intent(MainActivity.this, LocationService.class);
                 MainActivity.this.startActivityForResult(settingIntent,0);
- //               MainActivity.this.startService(serviceIntent);
+                MainActivity.this.startService(serviceIntent);
             }
         }, 2000);
     }
