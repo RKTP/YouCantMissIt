@@ -85,6 +85,7 @@ public class SearchLocationActivity extends FragmentActivity implements OnMapRea
             @Override
             public void onClick(View v) {
                 setResult(1);
+                SearchLocationActivity.this.finish();
             }
         });
 
