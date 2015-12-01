@@ -139,8 +139,8 @@ public class LocationService extends Service {
                 minimum=distance;
                 topPriority=e;
             }
-            if(minimum==Float.MAX_VALUE) topPriority=null;
         }
+        if(minimum==Float.MAX_VALUE) topPriority=null;
         if(!isWidgetActive&&topPriority!=null) {
             final WindowManager.LayoutParams params = new WindowManager.LayoutParams(
                     WindowManager.LayoutParams.WRAP_CONTENT,

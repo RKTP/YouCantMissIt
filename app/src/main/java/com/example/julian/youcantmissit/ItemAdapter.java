@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -104,6 +105,7 @@ public class ItemAdapter extends BaseAdapter {
         itemName.setText(dataList.get(position).getName());
 
         Switch switchWid = (Switch) vi.findViewById(R.id.item_switch);
+
         switchWid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
