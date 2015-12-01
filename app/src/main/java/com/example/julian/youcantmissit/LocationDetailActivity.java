@@ -32,9 +32,8 @@ public class LocationDetailActivity extends FragmentActivity implements OnMapRea
         setContentView(R.layout.activity_location_detail);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+                .findFragmentById(R.id.map_detail);
         mapFragment.getMapAsync(this);
-        moveCamera(lat,lng,name);
     }
 
     @Override
@@ -42,7 +41,7 @@ public class LocationDetailActivity extends FragmentActivity implements OnMapRea
         mMap = googleMap;
         LatLng target = new LatLng(this.lat, this.lng);
         mMap.addMarker(new MarkerOptions().position(target).title(name));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(target, 14));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(target, 15));
     }
 
     public void moveCamera(float lat,float lng, String locationName) {
@@ -50,6 +49,6 @@ public class LocationDetailActivity extends FragmentActivity implements OnMapRea
         this.lng = lng;
         LatLng target = new LatLng(this.lat, this.lng);
         mMap.addMarker(new MarkerOptions().position(target).title(locationName));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(target, 14));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(target, 15));
     }
 }
