@@ -109,8 +109,9 @@ public class ItemAdapter extends BaseAdapter {
             public void onClick(View v) {
                 LocationData location = dataList.get(position);
                 location.activationSwap();
-                dbManager.changeActive(location.getKey(),location.isActivated());
+                dbManager.changeActive(location.getKey(), location.isActivated());
                 ItemAdapter.this.notifyDataSetChanged();
+                LocationService.updateTargetLocation();
             }
         });
         return vi;

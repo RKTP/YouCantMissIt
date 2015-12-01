@@ -9,12 +9,17 @@ import android.Manifest;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.PixelFormat;
 import android.location.*;
 import android.location.LocationListener;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.View;
+import android.view.WindowManager;
+import android.widget.ImageView;
 
 import java.util.ArrayList;
 
@@ -50,6 +55,11 @@ public class LocationService extends Service {
     int lat=0,lng=0;
     static int  permission;
 
+    private static boolean isWidgetActive=false;
+
+    private static WindowManager windowManager;
+    private static ImageView chatHead;
+
     LocationListener locationListener = new customLocationListener();
 
     public LocationService() {
@@ -58,6 +68,10 @@ public class LocationService extends Service {
 
     public static LocationData getTop() {
         return topPriority;
+    }
+
+    public static float getMyLat() {
+        return (float)myLocation.getLatitude();
     }
 
     @Override
@@ -70,7 +84,28 @@ public class LocationService extends Service {
         locationManager=(LocationManager)getSystemService(context.LOCATION_SERVICE);
         permission = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,5000,5,locationListener);
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,5000,5,locationListener);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 5, locationListener);
+
+        windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
+
+        chatHead = new ImageView(this);
+        chatHead.setImageResource(R.drawable.direction38);
+        chatHead.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(topPriority!=null) {
+                    Intent dIntent = new Intent(context,DirectionActivity.class);
+                    dIntent.putExtra("mlat",(float)myLocation.getLatitude());
+                    dIntent.putExtra("mlng",(float)myLocation.getLongitude());
+                    dIntent.putExtra("tlat",topPriority.getLat());
+                    dIntent.putExtra("tlng",topPriority.getLng());
+                    dIntent.putExtra("tName",topPriority.getName());
+                    dIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(dIntent);
+                }
+            }
+        });
+
         updateTargetLocation();
     }
 
@@ -89,7 +124,7 @@ public class LocationService extends Service {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
-    protected static void updateTargetLocation() {
+    public static void updateTargetLocation() {
         ArrayList<LocationData> locationList = db.getActiveLocation();
         float minimum=Float.MAX_VALUE;
         for(LocationData e : locationList) {
@@ -99,11 +134,29 @@ public class LocationService extends Service {
             float distance = myLocation.distanceTo(element);
             if(distance>500) {
                 continue;
-            } else if(distance<minimum) {
+            }
+            if(distance<minimum) {
                 minimum=distance;
                 topPriority=e;
             }
             if(minimum==Float.MAX_VALUE) topPriority=null;
+        }
+        if(!isWidgetActive&&topPriority!=null) {
+            final WindowManager.LayoutParams params = new WindowManager.LayoutParams(
+                    WindowManager.LayoutParams.WRAP_CONTENT,
+                    WindowManager.LayoutParams.WRAP_CONTENT,
+                    WindowManager.LayoutParams.TYPE_PHONE,
+                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                    PixelFormat.TRANSLUCENT);
+
+            params.gravity = Gravity.TOP | Gravity.LEFT;
+            params.x = 1500;
+            params.y = 1500;
+            windowManager.addView(chatHead, params);
+            isWidgetActive=true;
+        } else if(topPriority==null&&isWidgetActive) {
+            windowManager.removeViewImmediate(chatHead);
+            isWidgetActive=false;
         }
     }
 }
