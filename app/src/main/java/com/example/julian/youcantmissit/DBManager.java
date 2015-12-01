@@ -115,7 +115,6 @@ public class DBManager extends SQLiteOpenHelper {
     }
 
     public ArrayList<LocationData> getActiveLocation() {
-
         if(this.activList==null) {
             ArrayList<LocationData> locationList = new ArrayList<>();
             String query = "SELECT * FROM " + this.tableName + " WHERE " + act +  " =1;";
@@ -149,6 +148,7 @@ public class DBManager extends SQLiteOpenHelper {
                 act + "=" + flag + " WHERE " +
                 id + "=" + key + ";";
         db.execSQL(query);
+        updateActiv();
         return true;
     }
 }

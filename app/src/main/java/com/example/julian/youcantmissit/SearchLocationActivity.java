@@ -44,7 +44,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
-public class SearchLocation extends FragmentActivity implements OnMapReadyCallback,GoogleApiClient.OnConnectionFailedListener {
+public class SearchLocationActivity extends FragmentActivity implements OnMapReadyCallback,GoogleApiClient.OnConnectionFailedListener {
     private GoogleApiClient mClient;
     private Button addButton, cancelButton;
     private SupportMapFragment mMapFragment;
@@ -76,7 +76,7 @@ public class SearchLocation extends FragmentActivity implements OnMapReadyCallba
                 Intent exIntent = new Intent();
                 exIntent.putExtras(extra);
                 setResult(0, exIntent);
-                SearchLocation.this.finish();
+                SearchLocationActivity.this.finish();
             }
         });
 

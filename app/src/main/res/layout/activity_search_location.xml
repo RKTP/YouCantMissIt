@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.example.julian.youcantmissit.SearchLocation">
+    tools:context="com.example.julian.youcantmissit.SearchLocationActivity">
 
     <android.support.design.widget.AppBarLayout android:layout_height="wrap_content"
         android:layout_width="match_parent" android:theme="@style/AppTheme.AppBarOverlay"
@@ -57,7 +57,7 @@
         android:layout_height="wrap_content" android:id="@+id/map"
         android:layout_below="@+id/auto_location_search"
         android:layout_above="@id/add_button"
-        tools:context="com.example.julian.youcantmissit.SearchLocation"
+        tools:context="com.example.julian.youcantmissit.SearchLocationActivity"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_alignParentEnd="true"
         android:layout_alignParentStart="true" />

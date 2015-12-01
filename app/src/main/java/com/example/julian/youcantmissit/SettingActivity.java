@@ -45,7 +45,7 @@ public class SettingActivity extends AppCompatActivity {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent childIntent = new Intent(SettingActivity.this, SearchLocation.class);
+                Intent childIntent = new Intent(SettingActivity.this, SearchLocationActivity.class);
                 startActivityForResult(childIntent, 0);
                 adapter.notifyDataSetChanged();
             }

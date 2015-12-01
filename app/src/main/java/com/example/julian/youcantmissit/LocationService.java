@@ -69,8 +69,8 @@ public class LocationService extends Service {
         myLocation.setLongitude(0);
         locationManager=(LocationManager)getSystemService(context.LOCATION_SERVICE);
         permission = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,10000,5,locationListener);
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,10000,5,locationListener);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,5000,5,locationListener);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,5000,5,locationListener);
         updateTargetLocation();
     }
 
