@@ -17,8 +17,8 @@ public class DBManager extends SQLiteOpenHelper {
     private static int version = 1;
     private static String DBname = "YouCantMissItDB";
     private static DBManager instance = null;
-    private ArrayList<LocationData> dataList=null;
-    private ArrayList<LocationData> activList=null;
+    private volatile ArrayList<LocationData> dataList=null;
+    private volatile ArrayList<LocationData> activList=null;
     private SQLiteDatabase db;
     private Context context;
 
@@ -87,6 +87,7 @@ public class DBManager extends SQLiteOpenHelper {
             }
         }
         this.dataList.add(newLocation);
+        updateActiv();
 
         ContentValues value = new ContentValues();
 
@@ -125,6 +126,7 @@ public class DBManager extends SQLiteOpenHelper {
             cursor.close();
             this.activList = locationList;
         }
+        updateActiv();
         return this.activList;
     }
 

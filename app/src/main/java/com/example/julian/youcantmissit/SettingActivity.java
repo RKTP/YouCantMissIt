@@ -104,6 +104,7 @@ public class SettingActivity extends AppCompatActivity {
                 //
             }
             adapter.notifyDataSetChanged();
+            LocationService.updateTargetLocation();
         }
     }
 

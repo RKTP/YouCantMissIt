@@ -3,6 +3,7 @@ package com.example.julian.youcantmissit;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Location;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -84,6 +85,7 @@ public class ItemAdapter extends BaseAdapter {
                                 dbManager.delete(dataList.get(pos).getKey());
                                 dataList.remove(pos);
                                 ItemAdapter.this.notifyDataSetChanged();
+                                LocationService.updateTargetLocation();
                             }
                         })
                         .setNegativeButton("NO", new DialogInterface.OnClickListener() {
