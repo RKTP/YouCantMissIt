@@ -15,6 +15,9 @@ Shows you how to get to the closest location you are heading to.
 
 #License
 
+This projected is Powered by Google.
+
+
 
 This project uses the following software:
 
